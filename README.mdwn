@@ -1,3 +1,27 @@
 # GNOME Sell System Aggregate Menu Tor Indicator
 
 GNOME-Shell indicator for the Tor Network status.
+
+## Building
+
+Building the Debian package is easiest:
+
+
+```
+git clone -b debian https://github.com/subgraph/gnome-shell-extension-torstatus.git
+cd gnome-shell-extension-torstatus
+gbp buildpackage -us -uc
+dpkg -i ../build-area/gnome-shell-extension-torstatus_<version>_all.deb
+```
+
+If you do not wish to build a debian page you can manually build an extension zip:
+
+
+```
+git clone https://github.com/subgraph/gnome-shell-extension-torstatus.git
+cd gnome-shell-extension-torstatus
+./autogen.sh
+./configure --prefix=/usr
+make
+make zip
+```
