@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="gnome-shell-extension-torstatus">
+	<enum id="org.gnome.shell.extensions.torstatus.position">
+		<value nick="none" value="0" />
+		<value nick="center" value="1" />
+		<value nick="right" value="2" />
+		<value nick="left" value="3" />
+	</enum>
+	<schema id="org.gnome.shell.extensions.torstatus" path="/org/gnome/shell/extensions/torstatus/">
+		<key name="position-in-panel" enum="org.gnome.shell.extensions.torstatus.position">
+			<default>'none'</default>
+			<summary>Position in panel</summary>
+			<description>Set the position of this GNOME Shell extension in the panel to either 'center', 'left' or 'right', 'none' (requires restart).</description>
+		</key>
+		<key name="refresh-interval" type="i">
+			<default>1</default>
+			<summary>Refresh interval in seconds</summary>
+			<description>The interval in seconds to refresh the sandbox information.</description>
+		</key>
+		<key name="notifications-disabled" type="b">
+			<default>false</default>
+			<summary>Disable notifications</summary>
+			<description>Disable popup notifications on changes and errors.</description>
+		</key>
+		<key name="menu-enabled" type="b">
+			<default>false</default>
+			<summary>Disable extended menu</summary>
+			<description>Disable extended menu.</description>
+		</key>
+	</schema>
+</schemalist>

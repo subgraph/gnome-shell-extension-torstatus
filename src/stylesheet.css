@@ -1,0 +1,22 @@
+.tor-none-indicator {
+	color: none;
+}
+.tor-disconnected-indicator {
+	color: #FF0004;
+}
+.tor-connected-indicator {
+	color: #F57900;
+}
+.tor-bootstrapping-indicator {
+	color: #FFFA00;
+}
+.tor-bootstrapped-indicator {
+	color: #83FF00;
+}
+.connection-monitor {
+	background-color: rgba(0, 0, 0, 0.8);
+	spacing: 4px;
+	padding: 4px;
+	border: 2px solid grey;
+	border-radius: 4px;
+}

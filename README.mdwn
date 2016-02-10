@@ -1,0 +1,3 @@
+# GNOME Sell System Aggregate Menu Tor Indicator
+
+GNOME-Shell indicator for the Tor Network status.
