@@ -1,0 +1,3 @@
+version=3
+
+https://github.com/subgraph/gnome-shell-extension-torstatus/tags (?:.*)/([\d\.]*)\.tar\.gz
