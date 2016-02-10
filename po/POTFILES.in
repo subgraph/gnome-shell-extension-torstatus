@@ -4,5 +4,5 @@ src/convenience.js
 src/ui/menu.js
 src/ui/cmonitor.js
 src/ui/indicator.js
-src/schemas/org.gnome.shell.extensions.torstatus.xml
 src/notifications.js
+src/schemas/org.gnome.shell.extensions.torstatus.gschema.xml
