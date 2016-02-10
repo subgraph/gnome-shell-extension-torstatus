@@ -46,6 +46,7 @@ const TorStatusIndicator = new Lang.Class({
 		this.torController = new TorControlClient('127.0.0.1', 9051, true);
 		this.torController.connect('protocol-error', Lang.bind(this, this._onProtocolError));
 		this.torController.connect('switched-tor-identity', Lang.bind(this, this._onSwitchedTorIdentity));
+		this.torController.connect('changed-connection-state', Lang.bind(this, this._onTorStateChanged));
 
 		this.indicator = new statusIndicator(this.theme, this.torController);
 		this.indicator.enable();
@@ -73,6 +74,12 @@ const TorStatusIndicator = new Lang.Class({
 
 		if (this.settings) {
 			this.settings.run_dispose();
+		}
+	}
+
+	, _onTorStateChanged: function(source, state, reason) {
+		if (state === 'bootstrapped') {
+			Main.notify(_("Tor Network"), _("Tor network bootstrapped successfully!"));
 		}
 	}
 
