@@ -28,12 +28,12 @@ const TorConnectedIcon = 'tor-simple-symbolic';
 const TorDisconnectedIcon = 'tor-disconnected-symbolic';
 
 const TorStatusIndicator = new Lang.Class({
-	Name: "TorStatusIndicator"
+	Name: 'TorStatusIndicator'
 
 	, _init: function(extensionMeta) {
 		this.parent();
 		this.theme = Gtk.IconTheme.get_default();
-		this.theme.append_search_path(extensionMeta.path + "/icons");
+		this.theme.append_search_path(extensionMeta.path + '/icons');
 
 		//this.settings = Convenience.getSettings(TORSTATUS_SETTINGS_SCHEMA);
 
@@ -43,7 +43,7 @@ const TorStatusIndicator = new Lang.Class({
 	}
 
 	, enable: function() {
-		this.torController = new TorControlClient("127.0.0.1", 9051, true);
+		this.torController = new TorControlClient('127.0.0.1', 9051, true);
 		this.torController.connect('protocol-error', Lang.bind(this, this._onProtocolError));
 		this.torController.connect('switched-tor-identity', Lang.bind(this, this._onSwitchedTorIdentity));
 

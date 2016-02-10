@@ -64,7 +64,7 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, openConnection: function() {
-		log("Tor Status: Trying to reconnect...");
+		log("Tor Status: " + _("Trying to reconnect..."));
 		try {
 			this._connect(this._host, this._port);
 			this._updateProtocolInfo();
@@ -72,15 +72,15 @@ const TorControlClient = new Lang.Class({
 			this._authenticate();
 			this.emit('changed-connection-state', 'ready');
 			this.stopAutoRetry();
-			log("Tor Status: Connected to Tor control port");
+			log("Tor Status: " + _("Connected to Tor control port"));
 			this._startCheckBootstrap();
 		} catch (e if e instanceof TorConnectionError) {
-			log("Tor Status: Could not connect to Tor control port");
+			log("Tor Status: " + _("Could not connect to Tor control port"));
 			this.closeConnection(e.message);
 			this._stopCheckBootstrap();
 			this.startAutoRetry();
 		} catch (e if e instanceof TorProtocolError) {
-			log("Tor Status: Tor control protocol error: " + e.message);
+			log("Tor Status: " + _("Tor control protocol error: ") + e.message);
 			this.closeConnection(e.message);
 			this._stopCheckBootstrap();
 			this.startAutoRetry();
@@ -109,14 +109,14 @@ const TorControlClient = new Lang.Class({
 			return this._connection === null || !this._connection.is_connected();
 		}));
 
-		log("Tor Status: Started auto retry (timer id=" + this._autoRetryTimerId + ")");
+		log("Tor Status: " + _("Started auto retry (timer id=%s)").format(this._autoRetryTimerId));
 	}
 
 	, stopAutoRetry: function() {
 		if (this._autoRetryTimerId === null)
 			return;
 
-		log("Tor Status: Stopping auto retry (timer id=" + this._autoRetryTimerId + ")");
+		log("Tor Status: " + _("Stopping auto retry (timer id=%s)").format(this._autoRetryTimerId));
 
 		GLib.source_remove(this._autoRetryTimerId);
 		this._autoRetryTimerId = null;
@@ -126,14 +126,14 @@ const TorControlClient = new Lang.Class({
 		if (this._autoBootstrapStatusTimerId === null)
 			return;
 
-		log("Tor Status: Stopping bootstrap check (timer id=" + this._autoBootstrapStatusTimerId + ")");
+		log("Tor Status: " + _("Stopping bootstrap check (timer id=%s)").format(this._autoBootstrapStatusTimerId));
 
 		GLib.source_remove(this._autoBootstrapStatusTimerId);
 		this._autoBootstrapStatusTimerId = null;
 	}
 
 	, _checkBootstrap: function() {
-		log("Tor Status: Checking bootstrap...");
+		log("Tor Status: " + _("Checking bootstrap..."));
 		if (this._connection === null || !this._connection.is_connected()) {
 			return false;
 		}
@@ -142,7 +142,7 @@ const TorControlClient = new Lang.Class({
 
 		if (reply.statusCode != 250) {
 			throw new TorProtocolError(
-				"Could not read bootstrap status: " + reply.replyLines.join('\n'),
+				_("Could not read bootstrap status: ") + reply.replyLines.join('\n'),
 				reply.statusCode
 			);
 		}
@@ -151,7 +151,7 @@ const TorControlClient = new Lang.Class({
 			let lines = reply.replyLines.join('\n');
 			this.bootstrap_percent = parseInt(lines.split('PROGRESS=')[1].split(' ')[0]);
 			this.bootstrap_summary = lines.split('SUMMARY="')[1].split('"')[0];
-			log("Tor Status: Bootstrap state: " + this.bootstrap_summary + " ("+ this.bootstrap_percent +").");
+			log("Tor Status: " + _("Bootstrap state: %s (%s)").format(this.bootstrap_summary, this.bootstrap_percent));
 
 			if (this.bootstrap_percent < 100) {
 				this.emit('changed-connection-state', 'boostrapping', this.bootstrap_summary);
@@ -162,7 +162,7 @@ const TorControlClient = new Lang.Class({
 			}
 		} catch (e) {
 			throw new TorProtocolError(
-				"Could not parse bootsrap status: " + lines + " (" + e.message + ")", reply.statusCode
+				_("Could not parse bootsrap status: %s (%s)").format(lines, e.message), reply.statusCode
 			);
 		}
 
@@ -170,7 +170,7 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, _startCheckBootstrap: function() {
-		log("Tor Status: Starting bootstrap check.");
+		log("Tor Status: " + _("Starting bootstrap check."));
 		if (this._autoBootstrapStatusTimerId !== null) {
 			return;
 		}
@@ -187,7 +187,7 @@ const TorControlClient = new Lang.Class({
 		} else {
 			this.emit(
 				'protocol-error',
-				"Could not switch Tor identity: " + reply.replyLines.join('\n'),
+				_("Could not switch Tor identity: ") + reply.replyLines.join('\n'),
 				reply.statusCode
 			);
 		}
@@ -200,7 +200,7 @@ const TorControlClient = new Lang.Class({
 			this._connection = socketClient.connect_to_host(host + ':' + port, null, null);
 		} catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CONNECTION_REFUSED)) {
 			throw new TorConnectionError(
-					"Could not connect to Tor control port (Tor is not listening on " + host + ":" + port + ")");
+					_("Could not connect to Tor control port (Tor is not listening on %:%").format(host, port));
 		}
 
 		this._inputStream = new Gio.DataInputStream({base_stream: this._connection.get_input_stream()});
@@ -212,7 +212,7 @@ const TorControlClient = new Lang.Class({
 
 		if (reply.statusCode != 250) {
 			throw new TorProtocolError(
-					"Could not read protocol info, reason: " + reply.replyLines.join('\n'),
+					_("Could not read protocol info, reason: ") + reply.replyLines.join('\n'),
 					reply.statusCode);
 		}
 
@@ -248,7 +248,7 @@ const TorControlClient = new Lang.Class({
 
 	, _ensureProtocolCompatibility: function() {
 		if (this._protocolInfo.protocolInfoVersion != 1) {
-			throw new TorProtocolError("Cannot handle tor protocol version: " + this._protocolInfo.protocolInfoVersion);
+			throw new TorProtocolError(_("Cannot handle tor protocol version: ") + this._protocolInfo.protocolInfoVersion);
 		}
 	}
 
@@ -258,7 +258,7 @@ const TorControlClient = new Lang.Class({
 
 		if (reply.statusCode != 250) {
 			throw new TorProtocolError(
-				"Could not authenticate, reason: " + reply.replyLines.join('\n'),
+				_("Could not authenticate, reason: ") + reply.replyLines.join('\n'),
 				statusCode
 			);
 		}
@@ -275,7 +275,7 @@ const TorControlClient = new Lang.Class({
 			let line = this._readLine();
 
 			if (line === null) {
-				let reason = "Lost connection to Tor server";
+				let reason = _("Lost connection to Tor server");
 				this.closeConnection(reason);
 				this.startAutoRetry();
 				return {replyLines: [reason]};

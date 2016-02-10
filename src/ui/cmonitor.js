@@ -35,7 +35,7 @@ const CircuitMonitor = new Lang.Class({
 		*/
 		Main.uiGroup.add_actor(this.actor);
 		Main.uiGroup.set_child_below_sibling(this.actor, Main.layoutManager.panelBox);
-		log("Tor Status: install ConnectionMonitor")
+		log("Tor Status: " + _("install ConnectionMonitor"))
 	},
 
 	remove: function() {
@@ -43,7 +43,7 @@ const CircuitMonitor = new Lang.Class({
 		Main.wm.removeKeybinding('open-circuit-monitor');
 		*/
 		Main.uiGroup.remove_actor(this.actor);
-		log("Tor Status: remove ConnectionMonitor")
+		log("Tor Status: " + _("remove ConnectionMonitor"))
 	},
 
 	_toggle: function() {

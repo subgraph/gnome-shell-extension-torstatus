@@ -14,7 +14,7 @@ const TorIndicator = new Lang.Class({
 	, Extends: PanelMenu.SystemIndicator
 
 	, _init: function(theme, tor_controller) {
-		log("Tor Status: Creating tor indicator")
+		log("Tor Status: " + _("Creating tor indicator"))
 		this.parent();
 
 		this.theme = theme;
@@ -25,7 +25,7 @@ const TorIndicator = new Lang.Class({
 
 	// TODO: Fix icon actor, somehow margin/padding is too big we may no be adding it to the right actor.
 	, enable: function() {
-		log("Tor Status: enabling indicator");
+		log("Tor Status: " + _("enabling indicator"));
 		this._indicator = this._addIndicator();
 
 		this._indicator.icon_name = 'tor-simple-symbolic';//'security-high-symbolic';
@@ -36,21 +36,35 @@ const TorIndicator = new Lang.Class({
 		this._onChangedConnectionState(null, null, null);
 
 		this._aggregate._indicators.add_child(this.indicators);
-		this._aggregate._indicators.set_child_below_sibling(this.indicators, this.findFirstVisible());//this._aggregate._indicators.get_first_child());
+		this._aggregate._indicators.set_child_below_sibling(this.indicators,
+			this.findIndicatorWidget(Main.panel.statusArea.aggregateMenu._network));
+			//this.findFirstVisible());
+			//this._aggregate._indicators.get_first_child());
 	}
 
 	, destroy: function() {
-		log("Tor Status: disabling indicator");
+		log("Tor Status: " + _("disabling indicator"));
 		if (this._indicator) {
 			this._indicator.destroy();
 		}
 	}
 
+	, findIndicatorWidget: function(widget) {
+		let items = this._aggregate._indicators.get_children();
+		for (let i = 0, ii = items.length; i < ii; i++) {
+			if (items[i] === widget.indicators) {
+				return items[i];
+			}
+		}
+
+		return this._aggregate._indicators.get_first_child();
+	}
+
 	, findFirstVisible: function() {
 		let items = this._aggregate._indicators.get_children();
-		for(let i = 0, ii = items.length; i < 11 ; i++) {
+		for(let i = 0, ii = items.length; i < ii ; i++) {
 			//if(items[i].visible === true) {
-			if(items[i].get_paint_visibility() === true) {
+			if (items[i].get_paint_visibility() === true) {
 				return items[i];
 			}
 		}
@@ -58,7 +72,7 @@ const TorIndicator = new Lang.Class({
 	}
 
 	, _onChangedConnectionState: function(source, state, reason) {
-		log("Tor Status: indicator switch state: " + state + " reason: " + reason);
+		log("Tor Status: " + _("indicator switch state: %s reason: %s").format(state, reason));
 		if (this._indicator == null) {
 			return
 		}
@@ -76,7 +90,7 @@ const TorIndicator = new Lang.Class({
 				*/
 				break;
 			case 'bootstrapping':
-				this._indicator.opacity = 128;
+				this._indicator.opacity = 160;
 				this._indicator.visible = true;
 				//this._indicator.add_style_class_name('tor-connected-indicator');
 				break;

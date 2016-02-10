@@ -14,7 +14,7 @@ const TorMenu = new Lang.Class({
 	, Extends: PopupMenu.PopupMenuSection
 
 	, _init: function(theme, tor_controller) {
-		log("Tor Status: Creating tor indicator menu")
+		log("Tor Status: " + _("Creating tor indicator menu"))
 		this.parent();
 
 		this._menu = null;
@@ -39,7 +39,7 @@ const TorMenu = new Lang.Class({
 	}
 
 	, buildMenu: function(disabled) {
-		log("Tor Status: Building menu");
+		log("Tor Status: " + _("Building menu"));
 		if (!this._menu) {
 			//this._menu.destroy();
 			this._menu = new PopupMenu.PopupMenuSection();
@@ -47,20 +47,20 @@ const TorMenu = new Lang.Class({
 			this.menu.removeAll();
 		}
 
-		this._item = new PopupMenu.PopupSubMenuMenuItem("Tor Network", true);
+		this._item = new PopupMenu.PopupSubMenuMenuItem(_("Tor Network"), true);
 		this._item.icon.icon_name = 'tor-simple-symbolic';
 		//this._item.icon.opacity = 64;
 
 		this._itemNewIdentity =
-			this._item.menu.addAction("New Identity", Lang.bind(this, this._onMenuNewIdentity));
+			this._item.menu.addAction(_("New Identity"), Lang.bind(this, this._onMenuNewIdentity));
 		this._itemCircuitMonitor =
-			this._item.menu.addAction("Circuit Monitor", Lang.bind(this, function() {
-				log("Tor Indicator: menu circuit monitor");
+			this._item.menu.addAction(_("Circuit Monitor"), Lang.bind(this, function() {
+				log("Tor Indicator: " + _("menu circuit monitor"));
 				this.cmonitor._toggle();
 			}));
 		this._itemConnectionPrefs =
-			this._item.menu.addAction("Connection Preferences", Lang.bind(this, function() {
-				log("Tor Indicator: menu connection prefs");
+			this._item.menu.addAction(_("Connection Preferences"), Lang.bind(this, function() {
+				log("Tor Indicator: " + _("menu connection prefs"));
 			}));
 
 		this._menu.addMenuItem(this._item);
@@ -94,12 +94,12 @@ const TorMenu = new Lang.Class({
 	}
 
 	, _onMenuNewIdentity: function() {
-		log("Tor Status: menu switch identity")
+		log("Tor Status: " + _("menu switch identity"))
 		this._tor_controller.switchIdentity();
 	}
 
 	, _onChangedConnectionState: function(source, state, reason) {
-		log("Tor Status: menu switch state: " + state + " reason: " + reason);
+		log("Tor Status: " + _("menu switch state: %s reason: %s.").format(state, reason));
 		if (this._indicator == null) {
 			return
 		}
