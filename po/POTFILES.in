@@ -1,8 +1,0 @@
-src/tor_control_client.js
-src/extension.js
-src/convenience.js
-src/ui/menu.js
-src/ui/cmonitor.js
-src/ui/indicator.js
-src/notifications.js
-src/schemas/org.gnome.shell.extensions.torstatus.gschema.xml
