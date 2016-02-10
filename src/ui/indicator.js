@@ -49,7 +49,8 @@ const TorIndicator = new Lang.Class({
 	, findFirstVisible: function() {
 		let items = this._aggregate._indicators.get_children();
 		for(let i = 0, ii = items.length; i < 11 ; i++) {
-			if(items[i].visible === true) {
+			//if(items[i].visible === true) {
+			if(items[i].get_paint_visibility() === true) {
 				return items[i];
 			}
 		}
@@ -87,7 +88,7 @@ const TorIndicator = new Lang.Class({
 			case 'closed':
 			default:
 				this._indicator.opacity = 48;
-				this._indicator.visible = false;
+				this._indicator.visible = true;
 				//this._indicator.add_style_class_name('tor-none-indicator');
 				break;
 		}
