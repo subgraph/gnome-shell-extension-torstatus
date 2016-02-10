@@ -59,7 +59,7 @@ const TorControlClient = new Lang.Class({
 
 	, destroy: function() {
 		this.stopAutoRetry();
-		this._stopCheckBootstrap();
+		this._stopCheckStatus();
 		this.closeConnection();
 	}
 
@@ -73,21 +73,20 @@ const TorControlClient = new Lang.Class({
 			this.emit('changed-connection-state', 'ready');
 			this.stopAutoRetry();
 			log("Tor Status: " + _("Connected to Tor control port"));
-			this._startCheckBootstrap();
+			this._startCheckStatus();
 		} catch (e if e instanceof TorConnectionError) {
 			log("Tor Status: " + _("Could not connect to Tor control port"));
 			this.closeConnection(e.message);
-			this._stopCheckBootstrap();
 			this.startAutoRetry();
 		} catch (e if e instanceof TorProtocolError) {
 			log("Tor Status: " + _("Tor control protocol error: ") + e.message);
 			this.closeConnection(e.message);
-			this._stopCheckBootstrap();
 			this.startAutoRetry();
 		}
 	}
 
 	, closeConnection: function(reason) {
+		this._stopCheckStatus();
 		if (this._connection && this._connection.is_connected()) {
 			this._connection.close(null);
 		}
@@ -122,19 +121,20 @@ const TorControlClient = new Lang.Class({
 		this._autoRetryTimerId = null;
 	}
 
-	, _stopCheckBootstrap: function() {
+	, _stopCheckStatus: function() {
 		if (this._autoBootstrapStatusTimerId === null)
 			return;
 
-		log("Tor Status: " + _("Stopping bootstrap check (timer id=%s)").format(this._autoBootstrapStatusTimerId));
-
 		GLib.source_remove(this._autoBootstrapStatusTimerId);
 		this._autoBootstrapStatusTimerId = null;
+
+		log("Tor Status: " + _("Stopping bootstrap check (timer id=%s)").format(this._autoBootstrapStatusTimerId));
 	}
 
-	, _checkBootstrap: function() {
+	, _checkStatus: function() {
 		log("Tor Status: " + _("Checking bootstrap..."));
 		if (this._connection === null || !this._connection.is_connected()) {
+			this._old_percent = null;
 			return false;
 		}
 
@@ -149,16 +149,14 @@ const TorControlClient = new Lang.Class({
 
 		try {
 			let lines = reply.replyLines.join('\n');
+			this._old_percent = this.bootstrap_percent;
 			this.bootstrap_percent = parseInt(lines.split('PROGRESS=')[1].split(' ')[0]);
 			this.bootstrap_summary = lines.split('SUMMARY="')[1].split('"')[0];
 			log("Tor Status: " + _("Bootstrap state: %s (%s)").format(this.bootstrap_summary, this.bootstrap_percent));
 
-			if (this.bootstrap_percent < 100) {
-				this.emit('changed-connection-state', 'boostrapping', this.bootstrap_summary);
-
-				return true;
-			} else {
-				this.emit('changed-connection-state', 'bootstrapped', this.bootstrap_summary);
+			if (this._old_percent != this.bootstrap_percent) {
+				let phase = (this.bootstrap_percent < 100) ? 'boostrapping' : 'bootstrapped';
+				this.emit('changed-connection-state', phase, this.bootstrap_summary);
 			}
 		} catch (e) {
 			throw new TorProtocolError(
@@ -166,16 +164,20 @@ const TorControlClient = new Lang.Class({
 			);
 		}
 
-		return false;
+		return true;
 	}
 
-	, _startCheckBootstrap: function() {
+	, _startCheckStatus: function() {
 		log("Tor Status: " + _("Starting bootstrap check."));
 		if (this._autoBootstrapStatusTimerId !== null) {
 			return;
 		}
-		this._autoBootstrapStatusTimerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, Lang.bind(this, function() {
-			return this._checkBootstrap();
+
+		if (!this._checkStatus()) {
+			return;
+		}
+		this._autoBootstrapStatusTimerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1500, Lang.bind(this, function() {
+			return this._checkStatus();
 		}));
 	}
 
@@ -200,7 +202,7 @@ const TorControlClient = new Lang.Class({
 			this._connection = socketClient.connect_to_host(host + ':' + port, null, null);
 		} catch (e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CONNECTION_REFUSED)) {
 			throw new TorConnectionError(
-					_("Could not connect to Tor control port (Tor is not listening on %:%").format(host, port));
+					_("Could not connect to Tor control port (Tor is not listening on %s:%s").format(host, port));
 		}
 
 		this._inputStream = new Gio.DataInputStream({base_stream: this._connection.get_input_stream()});

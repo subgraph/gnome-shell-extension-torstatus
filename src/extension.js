@@ -79,7 +79,11 @@ const TorStatusIndicator = new Lang.Class({
 
 	, _onTorStateChanged: function(source, state, reason) {
 		if (state === 'bootstrapped') {
+			this._tor_bootstrap = true;
 			Main.notify(_("Tor Network"), _("Tor network bootstrapped successfully!"));
+		} else if (this._tor_bootstrap === true) {
+			this._tor_bootstrap = false;
+			Main.notify(_("Tor Network"), _("Tor network disconnected!"));
 		}
 	}
 
