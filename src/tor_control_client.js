@@ -143,13 +143,13 @@ const TorControlClient = new Lang.Class({
 		}
 
 		if (this.bootstrap_percent < 100) {
-			if (_autoBootstrapStatusTimerId != null) {
+			if (this._autoBootstrapStatusTimerId != null) {
 				return;
 			}
 			this.emit('changed-connection-state', 'boostrapping', this.bootstrap_summary);
 			// TODO: Use Mainloop idle....
 			this._autoBootstrapStatusTimerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, Lang.bind(this, function() {
-				this.checkBootstrap();
+				this._checkBootstrap();
 				return this._connection === null || !this._connection.is_connected();
 			}));
 		} else {
