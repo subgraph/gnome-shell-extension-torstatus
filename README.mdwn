@@ -10,7 +10,11 @@ Building the Debian package is easiest:
 ```
 git clone -b debian https://github.com/subgraph/gnome-shell-extension-torstatus.git
 cd gnome-shell-extension-torstatus
+# To build the latest release
 gbp buildpackage -us -uc
+# To build from current master/HEAD
+gbp buildpackage -us -uc --git-upstream-tree=TREEISH
+# And installing as usual
 dpkg -i ../build-area/gnome-shell-extension-torstatus_<version>_all.deb
 ```
 
