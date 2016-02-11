@@ -10,11 +10,16 @@ const PopupMenu = imports.ui.popupMenu;
 const MessageTray = imports.ui.messageTray;
 const St = imports.gi.St;
 
-const Gettext = imports.gettext.domain('gnome-shell-extension-torstatus');
-const _ = Gettext.gettext;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
+
 const Convenience = Me.imports.convenience;
+const Config = Me.imports.configs;
+
+const Gettext = imports.gettext.domain(Config.PKG_GETTEXT);
+const _ = Gettext.gettext;
+
+const TorNotification = Me.imports.notifications.Notification;
 
 const statusIndicator = Me.imports.ui.indicator.TorIndicator;
 const statusMenu = Me.imports.ui.menu.TorMenu;
@@ -80,30 +85,28 @@ const TorStatusIndicator = new Lang.Class({
 	, _onTorStateChanged: function(source, state, reason) {
 		if (state === 'bootstrapped') {
 			this._tor_bootstrap = true;
-			Main.notify(_("Tor Network"), _("Tor network bootstrapped successfully!"));
+			this._showNotification(_("Tor network bootstrapped successfully!"));
 		} else if (this._tor_bootstrap === true) {
 			this._tor_bootstrap = false;
-			Main.notify(_("Tor Network"), _("Tor network disconnected!"));
+			this._showNotification(_("Tor network disconnected!"));
 		}
 	}
 
 	, _onSwitchedTorIdentity: function() {
-		//this._notification = new MessageTray.Notification(this, header, text);
-		/*
-		let gicon = new Gio.ThemedIcon({ name: 'tor-simple-symbolic' });
-		let title = _("Tor Network");
-		let text = _("Switched to a new Tor identity!");
-
-		let notification = new MessageTray.Notification(this, title, text, { gicon: gicon });
-		notification.setTransient(true);
-		Main.notify(notification);
-		*/
-		Main.notify(_("Tor Network"), _("Switched to a new Tor identity!"));
+		this._showNotification(_("Switched to a new Tor identity!"));
 	}
 
 	, _onProtocolError: function(source, message, statusCode) {
 		var msg = _("Tor control protocol error") + ': ' + message + ' (' + _("status code") + statusCode + ')';
-		Main.notifyError(_("Tor Network"), msg);
+		this._showNotification(msg);
+	}
+
+	, _showNotification: function(msg) {
+		if (this._notify) {
+			this._notify.remove();
+		}
+		this._notify = new TorNotification(Config.PKG_TITLE, msg);
+		this._notify.show();
 	}
 });
 

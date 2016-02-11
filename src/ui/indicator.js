@@ -8,6 +8,10 @@ const PanelMenu = imports.ui.panelMenu;
 const Tweener = imports.ui.tweener;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
+const Config = Me.imports.configs;
+
+const Gettext = imports.gettext.domain(Config.PKG_GETTEXT);
+const _ = Gettext.gettext;
 
 const TorIndicator = new Lang.Class({
 	Name: 'TorIndicator'
@@ -23,12 +27,12 @@ const TorIndicator = new Lang.Class({
 		this._tor_controller.connect('changed-connection-state', Lang.bind(this, this._onChangedConnectionState));
 	}
 
-	// TODO: Fix icon actor, somehow margin/padding is too big we may no be adding it to the right actor.
+	// TODO? Fix icon actor, somehow margin/padding is too big we may no be adding it to the right actor.
 	, enable: function() {
 		log("Tor Status: " + _("enabling indicator"));
 		this._indicator = this._addIndicator();
 
-		this._indicator.icon_name = 'tor-simple-symbolic';//'security-high-symbolic';
+		this._indicator.icon_name = Config.PKG_ICON_SYMBOLIC;
 		//this._indicator.add_style_class_name('screencast-indicator');
 		this._indicator.visible = true;
 		this._indicator.opacity = 48;
@@ -76,7 +80,7 @@ const TorIndicator = new Lang.Class({
 		if (this._indicator == null) {
 			return
 		}
-		// TODO add_effect/Tweener for opacity between Ready and bootstrapping
+		// TODO: add_effect/Tweener for opacity between Ready and bootstrapping
 		switch (state) {
 			case 'bootstrapped':
 				this._indicator.opacity = 255;

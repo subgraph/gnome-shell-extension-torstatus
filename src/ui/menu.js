@@ -6,7 +6,13 @@ const Lang = imports.lang;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 
+
 const Me = imports.misc.extensionUtils.getCurrentExtension();
+const Config = Me.imports.configs;
+
+const Gettext = imports.gettext.domain(Config.PKG_GETTEXT);
+const _ = Gettext.gettext;
+
 const CircuitMonitor = Me.imports.ui.cmonitor.CircuitMonitor;
 
 const TorMenu = new Lang.Class({

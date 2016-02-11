@@ -60,7 +60,7 @@ const TorControlClient = new Lang.Class({
 	, destroy: function() {
 		this.stopAutoRetry();
 		this._stopCheckStatus();
-		this.closeConnection();
+		this.closeConnection(null, true);
 	}
 
 	, openConnection: function() {
@@ -85,7 +85,7 @@ const TorControlClient = new Lang.Class({
 		}
 	}
 
-	, closeConnection: function(reason) {
+	, closeConnection: function(reason, noemit) {
 		this._stopCheckStatus();
 		if (this._connection && this._connection.is_connected()) {
 			this._connection.close(null);
@@ -93,7 +93,9 @@ const TorControlClient = new Lang.Class({
 
 		this._connection = null;
 
-		this.emit('changed-connection-state', 'closed', reason);
+		if (noemit === true) {
+			this.emit('changed-connection-state', 'closed', reason);
+		}
 	}
 
 	, startAutoRetry: function() {
