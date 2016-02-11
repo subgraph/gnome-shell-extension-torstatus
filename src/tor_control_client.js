@@ -132,13 +132,13 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, _checkStatus: function() {
-		log("Tor Status: " + _("Checking bootstrap..."));
+		//log("Tor Status: " + _("Checking bootstrap..."));
 		if (this._connection === null || !this._connection.is_connected()) {
 			this._old_percent = null;
 			return false;
 		}
 
-		var reply = this._runCommand('GETINFO status/bootstrap-phase');
+		let reply = this._runCommand('GETINFO status/bootstrap-phase');
 
 		if (reply.statusCode != 250) {
 			throw new TorProtocolError(
@@ -152,9 +152,9 @@ const TorControlClient = new Lang.Class({
 			this._old_percent = this.bootstrap_percent;
 			this.bootstrap_percent = parseInt(lines.split('PROGRESS=')[1].split(' ')[0]);
 			this.bootstrap_summary = lines.split('SUMMARY="')[1].split('"')[0];
-			log("Tor Status: " + _("Bootstrap state: %s (%s)").format(this.bootstrap_summary, this.bootstrap_percent));
 
 			if (this._old_percent != this.bootstrap_percent) {
+				log("Tor Status: " + _("Bootstrap state: %s (%s)").format(this.bootstrap_summary, this.bootstrap_percent));
 				let phase = (this.bootstrap_percent < 100) ? 'boostrapping' : 'bootstrapped';
 				this.emit('changed-connection-state', phase, this.bootstrap_summary);
 			}
@@ -182,7 +182,7 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, switchIdentity: function() {
-		var reply = this._runCommand('SIGNAL NEWNYM');
+		let reply = this._runCommand('SIGNAL NEWNYM');
 
 		if (reply.statusCode == 250) {
 			this.emit('switched-tor-identity');
@@ -196,7 +196,7 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, _connect: function(host, port) {
-		var socketClient = new Gio.SocketClient();
+		let socketClient = new Gio.SocketClient();
 
 		try {
 			this._connection = socketClient.connect_to_host(host + ':' + port, null, null);
@@ -210,7 +210,7 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, _updateProtocolInfo: function() {
-		var reply = this._runCommand('PROTOCOLINFO');
+		let reply = this._runCommand('PROTOCOLINFO');
 
 		if (reply.statusCode != 250) {
 			throw new TorProtocolError(
@@ -218,11 +218,11 @@ const TorControlClient = new Lang.Class({
 					reply.statusCode);
 		}
 
-		var protocolInfoVersion;
-		var authMethods = [];
-		var authCookieFile;
+		let protocolInfoVersion;
+		let authMethods = [];
+		let authCookieFile;
 
-		for (let i = 0; i < reply.replyLines.length; i++) {
+		for (let i = 0, ii = reply.replyLines.length; i < ii; i++) {
 			let tokens = reply.replyLines[i].split(' ');
 
 			switch (tokens[0]) {
@@ -255,8 +255,13 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, _authenticate: function() {
-		var cookie = this._readAuthCookie();
-		var reply = this._runCommand('AUTHENTICATE ' + cookie);
+		let cookie;
+		try {
+			cookie = this._readAuthCookie();
+		} catch (e) {
+			cookie = '';
+		}
+		let reply = this._runCommand('AUTHENTICATE ' + cookie);
 
 		if (reply.statusCode != 250) {
 			throw new TorProtocolError(
@@ -270,8 +275,8 @@ const TorControlClient = new Lang.Class({
 		this._outputStream.put_string(cmd + '\n', null);
 		this._outputStream.flush(null);
 
-		var statusCode;
-		var replyLines = [];
+		let statusCode;
+		let replyLines = [];
 
 		do {
 			let line = this._readLine();
@@ -283,7 +288,7 @@ const TorControlClient = new Lang.Class({
 				return {replyLines: [reason]};
 			}
 
-			var reply = this._parseLine(line);
+			let reply = this._parseLine(line);
 			statusCode = reply.statusCode;
 			replyLines.push(reply.replyLine);
 		} while (reply.isMidReplyLine);
@@ -309,13 +314,13 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, _readAuthCookie: function(force) {
-		var file = Gio.File.new_for_path(this._protocolInfo.authCookieFile);
-		var inputStream = file.read(null);
-		var cookieData = inputStream.read_bytes(32, null, null).get_data();
+		let file = Gio.File.new_for_path(this._protocolInfo.authCookieFile);
+		let inputStream = file.read(null);
+		let cookieData = inputStream.read_bytes(32, null, null).get_data();
 		inputStream.close(null);
 
-		var authCookie = '';
-		for (var i = 0; i < cookieData.length; i++) {
+		let authCookie = '';
+		for (let i = 0; i < cookieData.length; i++) {
 			let hexByte = cookieData[i].toString(16);
 			if (hexByte.length == 1) {
 				hexByte = '0' + hexByte;
