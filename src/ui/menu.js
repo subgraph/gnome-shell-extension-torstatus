@@ -41,38 +41,62 @@ const TorMenu = new Lang.Class({
 		this._cmonitor = new CircuitMonitor(this._theme);
 		this._cmonitor.install();
 
-		this.buildMenu(true);
+		if (!this._menu) {
+			this._menu = new PopupMenu.PopupMenuSection();
+		}
+		this.rebuildMenu();
 	}
 
-	, buildMenu: function(disabled) {
+	, rebuildMenu: function(state, opacity) {
 		log("Tor Status: " + _("Building menu"));
-		if (!this._menu) {
-			//this._menu.destroy();
-			this._menu = new PopupMenu.PopupMenuSection();
-		} else {
-			this.menu.removeAll();
+		this._menu.removeAll();
+
+		if (state === undefined) {
+			return;
 		}
 
-		this._item = new PopupMenu.PopupSubMenuMenuItem(_("Tor Network"), true);
-		this._item.icon.icon_name = 'tor-simple-symbolic';
-		//this._item.icon.opacity = 64;
+		this._item = new PopupMenu.PopupSubMenuMenuItem(Config.PKG_TITLE, true);
+		this._item.icon.icon_name = Config.PKG_ICON_SYMBOLIC;
+		this._item.icon.opacity = (opacity !== undefined ? opacity : 255)
 
-		this._itemNewIdentity =
-			this._item.menu.addAction(_("New Identity"), Lang.bind(this, this._onMenuNewIdentity));
-		this._itemCircuitMonitor =
-			this._item.menu.addAction(_("Circuit Monitor"), Lang.bind(this, function() {
-				log("Tor Indicator: " + _("menu circuit monitor"));
-				this.cmonitor._toggle();
-			}));
-		this._itemConnectionPrefs =
-			this._item.menu.addAction(_("Connection Preferences"), Lang.bind(this, function() {
-				log("Tor Indicator: " + _("menu connection prefs"));
-			}));
+		switch (state) {
+			case 'closed':
+				this._item.setSensitive(false);
+				break;
+			case 'ready':
+				this._item.setSubmenuShown(false);
+				break;
+			case 'bootstrapped':
+			default:
+				this._itemNewIdentity =
+					this._item.menu.addAction(_("New Identity"), Lang.bind(this, this._onMenuNewIdentity));
+				if (state !== 'bootstrapped') {
+					this._itemNewIdentity.setSensitive(false);
+				}
+			if (!Config.PKG_RELEASE) {
+				this._itemCircuitMonitor =
+					this._item.menu.addAction(_("Circuit Monitor"), Lang.bind(this, function() {
+						log("Tor Indicator: " + _("menu circuit monitor"));
+						this._cmonitor._toggle();
+					}));
+				if (state !== 'bootstrapped') {
+					this._itemCircuitMonitor.setSensitive(false);
+				}
+				//this._itemConnectionPrefs =
+				//	this._item.menu.addAction(_("Connection Preferences"), Lang.bind(this, function() {
+				//		log("Tor Indicator: " + _("menu connection prefs"));
+				//	}));
+				//if (state !== 'bootstrapped') {
+				//	this._itemConnectionPrefs.setSensitive(false);
+				//}
+			}
+		}
 
 		this._menu.addMenuItem(this._item);
 	}
 
 	, enable: function() {
+		log("Tor Status: " + _("Enable menu"));
 		let midx = this.findMenu(this._aggregate._power.menu);
 		if(midx >= 0) {
 			this._aggregate.menu.addMenuItem(this._menu, midx);
@@ -106,32 +130,25 @@ const TorMenu = new Lang.Class({
 
 	, _onChangedConnectionState: function(source, state, reason) {
 		log("Tor Status: " + _("menu switch state: %s reason: %s.").format(state, reason));
-		if (this._indicator == null) {
+		if (this._menu == null) {
 			return
 		}
-		//state = 'bootstrapping';
 		switch (state) {
 			case 'bootstrapped':
-				this._itemNewIdentity.visible = true;
-				//this._itemNewIdentity.visible = true;
-				//this.buildMenu(255);
-				//this._itemNewIdentity.setSensitive(true);
+				this.rebuildMenu(state, 255);
 				break;
 			case 'bootstrapping':
-				this._itemNewIdentity.visible = false;
-				//this.buildMenu(192);
-				//this._itemNewIdentity.setSensitive(false);
+				this.rebuildMenu(state, 160);
 				break;
 			case 'ready':
-				this._itemNewIdentity.visible = false;
-				//this.buildMenu(128);
-				//this._itemNewIdentity.setSensitive(false);
+				this.rebuildMenu(state, 96);
 				break;
 			case 'closed':
+				this.rebuildMenu(state);
+				break;
+			case 'nonet':
 			default:
-				this._itemNewIdentity.visible = false;
-				//this.buildMenu(255);
-				//this._itemNewIdentity.setSensitive(false);
+				this.rebuildMenu()
 				break;
 		}
 	}

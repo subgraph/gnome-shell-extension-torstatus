@@ -58,10 +58,8 @@ const TorStatusIndicator = new Lang.Class({
 		this.indicator = new statusIndicator(this.theme, this.torController);
 		this.indicator.enable();
 
-		//if (this.settings.get_bool(TORSTATUS_KEY_ENABLEMENU)) {
-		//	this.menu = new statusMenu(this.theme, this.torController);
-		//	this.menu.enable();
-		//}
+		this.menu = new statusMenu(this.theme, this.torController);
+		this.menu.enable();
 
 		this.torController.openConnection();
 	}
