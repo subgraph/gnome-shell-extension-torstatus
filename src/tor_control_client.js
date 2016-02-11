@@ -140,7 +140,7 @@ const TorControlClient = new Lang.Class({
 			return false;
 		}
 
-		let reply = this._runCommand('GETINFO status/bootstrap-phase');
+		var reply = this._runCommand('GETINFO status/bootstrap-phase');
 
 		if (reply.statusCode != 250) {
 			throw new TorProtocolError(
@@ -156,7 +156,7 @@ const TorControlClient = new Lang.Class({
 			this.bootstrap_summary = lines.split('SUMMARY="')[1].split('"')[0];
 
 			if (this._old_percent != this.bootstrap_percent) {
-				log("Tor Status: " + _("Bootstrap state: %s (%s)").format(this.bootstrap_summary, this.bootstrap_percent));
+				log("Tor Status: " + _("Bootstrap state changed: %s (%s)").format(this.bootstrap_summary, this.bootstrap_percent));
 				let phase = (this.bootstrap_percent < 100) ? 'boostrapping' : 'bootstrapped';
 				this.emit('changed-connection-state', phase, this.bootstrap_summary);
 			}
@@ -184,7 +184,7 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, switchIdentity: function() {
-		let reply = this._runCommand('SIGNAL NEWNYM');
+		var reply = this._runCommand('SIGNAL NEWNYM');
 
 		if (reply.statusCode == 250) {
 			this.emit('switched-tor-identity');
@@ -198,7 +198,7 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, _connect: function(host, port) {
-		let socketClient = new Gio.SocketClient();
+		var socketClient = new Gio.SocketClient();
 
 		try {
 			this._connection = socketClient.connect_to_host(host + ':' + port, null, null);
@@ -212,7 +212,7 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, _updateProtocolInfo: function() {
-		let reply = this._runCommand('PROTOCOLINFO');
+		var reply = this._runCommand('PROTOCOLINFO');
 
 		if (reply.statusCode != 250) {
 			throw new TorProtocolError(
@@ -263,7 +263,7 @@ const TorControlClient = new Lang.Class({
 		} catch (e) {
 			cookie = '';
 		}
-		let reply = this._runCommand('AUTHENTICATE ' + cookie);
+		var reply = this._runCommand('AUTHENTICATE ' + cookie);
 
 		if (reply.statusCode != 250) {
 			throw new TorProtocolError(
@@ -290,7 +290,7 @@ const TorControlClient = new Lang.Class({
 				return {replyLines: [reason]};
 			}
 
-			let reply = this._parseLine(line);
+			var reply = this._parseLine(line);
 			statusCode = reply.statusCode;
 			replyLines.push(reply.replyLine);
 		} while (reply.isMidReplyLine);
@@ -322,7 +322,7 @@ const TorControlClient = new Lang.Class({
 		inputStream.close(null);
 
 		let authCookie = '';
-		for (let i = 0; i < cookieData.length; i++) {
+		for (let i = 0, ii = cookieData.length; i < ii; i++) {
 			let hexByte = cookieData[i].toString(16);
 			if (hexByte.length == 1) {
 				hexByte = '0' + hexByte;

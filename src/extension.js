@@ -28,9 +28,8 @@ const TorControlClient = Me.imports.tor_control_client.TorControlClient;
 
 const TORSTATUS_SETTINGS_SCHEMA = 'org.gnome.shell.extensions.torstatus';
 const TORSTATUS_KEY_ENABLEMENU = 'menu-enabled';
-
-const TorConnectedIcon = 'tor-simple-symbolic';
-const TorDisconnectedIcon = 'tor-disconnected-symbolic';
+const TORSTATUS_KEY_CONTROLHOST = 'control-host';
+const TORSTATUS_KEY_CONTROLPORT = 'control-port';
 
 const TorStatusIndicator = new Lang.Class({
 	Name: 'TorStatusIndicator'
@@ -41,6 +40,8 @@ const TorStatusIndicator = new Lang.Class({
 		this.theme.append_search_path(extensionMeta.path + '/icons');
 
 		//this.settings = Convenience.getSettings(TORSTATUS_SETTINGS_SCHEMA);
+		//this._control_host = this.settings.get_string(TORSTATUS_KEY_CONTROLHOST);
+		//this._control_port = this.settings.get_string(TORSTATUS_KEY_CONTROLPORT);
 
 		this.indicator = null;
 		this.menu = null;
@@ -48,6 +49,7 @@ const TorStatusIndicator = new Lang.Class({
 	}
 
 	, enable: function() {
+		//this.torController = new TorControlClient(this._control_host, this._control_port, true);
 		this.torController = new TorControlClient('127.0.0.1', 9051, true);
 		this.torController.connect('protocol-error', Lang.bind(this, this._onProtocolError));
 		this.torController.connect('switched-tor-identity', Lang.bind(this, this._onSwitchedTorIdentity));
