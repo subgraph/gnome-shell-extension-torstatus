@@ -41,26 +41,24 @@ function getDefaultSource() {
 }
 
 const Source = new Lang.Class({
-	Name: 'NotificationSource',
-	Extends: MessageTray.Source,
+	Name: 'NotificationSource'
+	, Extends: MessageTray.Source
 
-	ICON_NAME: Config.PKG_ICON_SYMBOLIC,
-
-	_init: function() {
-		this.parent(Config.PKG_TITLE, this.ICON_NAME);
+	, _init: function() {
+		this.parent(Config.PKG_TITLE, Config.PKG_ICON_SYMBOLIC);
 
 		this._idleId = 0;
-	},
+	}
 
 	// override parent method
-	_createPolicy: function() {
+	, _createPolicy: function() {
 		return new MessageTray.NotificationPolicy({
 			showInLockScreen: false
 			, detailsInLockScreen: false
 		});
-	},
+	}
 
-	_lastNotificationRemoved: function() {
+	, _lastNotificationRemoved: function() {
 		this._idleId = Mainloop.idle_add(Lang.bind(this,
 										 function() {
 											 if (!this.count) {
@@ -71,10 +69,10 @@ const Source = new Lang.Class({
 										 }));
 		GLib.Source.set_name_by_id(this._idleId,
 								   '['+Config.PKG_GETTEXT+'] this._lastNotificationRemoved');
-	},
+	}
 
 	// override parent method
-	_onNotificationDestroy: function(notification) {
+	, _onNotificationDestroy: function(notification) {
 		let index = this.notifications.indexOf(notification);
 		if (index < 0) {
 			return;
@@ -86,18 +84,18 @@ const Source = new Lang.Class({
 		}
 
 		this.countUpdated();
-	},
+	}
 
-	destroyNotifications: function() {
+	, destroyNotifications: function() {
 		let notifications = this.notifications.slice();
 
 		notifications.forEach(
 			function(notification) {
 				notification.destroy();
 			});
-	},
+	}
 
-	destroy: function() {
+	, destroy: function() {
 		this.parent();
 
 		if (this._idleId) {
