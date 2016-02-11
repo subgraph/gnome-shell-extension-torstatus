@@ -98,14 +98,14 @@ const TorStatusIndicator = new Lang.Class({
 
 	, _onProtocolError: function(source, message, statusCode) {
 		var msg = _("Tor control protocol error") + ': ' + message + ' (' + _("status code") + statusCode + ')';
-		this._showNotification(msg);
+		this._showNotification(msg, true);
 	}
 
-	, _showNotification: function(msg) {
+	, _showNotification: function(msg, high) {
 		if (this._notify) {
 			this._notify.remove();
 		}
-		this._notify = new TorNotification(Config.PKG_TITLE, msg);
+		this._notify = new TorNotification(Config.PKG_TITLE, msg, high);
 		this._notify.show();
 	}
 });

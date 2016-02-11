@@ -54,8 +54,10 @@ const Source = new Lang.Class({
 
 	// override parent method
 	_createPolicy: function() {
-		return new MessageTray.NotificationPolicy({ showInLockScreen: false,
-													detailsInLockScreen: false });
+		return new MessageTray.NotificationPolicy({
+			showInLockScreen: false
+			, detailsInLockScreen: false
+		});
 	},
 
 	_lastNotificationRemoved: function() {
@@ -109,12 +111,14 @@ const Notification = new Lang.Class({
 	Name: 'Notification'
 	, Extends: MessageTray.Notification
 
-	, _init: function(title, message) {
+	, _init: function(title, message, high) {
 		this.source = getDefaultSource();
 		this.parent(this.source, title, message, { bannerMarkup: true });
 
 		this.setTransient(true);
-		//this.setUrgency(MessageTray.Urgency.HIGH);
+		if (high === true) {
+			this.setUrgency(MessageTray.Urgency.HIGH);
+		}
 
 		//this.addAction(_("Action"), Lang.bind(this,
 		//	function() {
