@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-10 22:51+0000\n"
+"POT-Creation-Date: 2016-02-10 23:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,26 +29,26 @@ msgstr ""
 msgid "Could not connect to Tor control port"
 msgstr ""
 
-#: src/tor_control_client.js:83
+#: src/tor_control_client.js:82
 msgid "Tor control protocol error: "
 msgstr ""
 
-#: src/tor_control_client.js:112
+#: src/tor_control_client.js:111
 #, javascript-format
 msgid "Started auto retry (timer id=%s)"
 msgstr ""
 
-#: src/tor_control_client.js:119
+#: src/tor_control_client.js:118
 #, javascript-format
 msgid "Stopping auto retry (timer id=%s)"
 msgstr ""
 
-#: src/tor_control_client.js:129
+#: src/tor_control_client.js:131
 #, javascript-format
 msgid "Stopping bootstrap check (timer id=%s)"
 msgstr ""
 
-#: src/tor_control_client.js:136
+#: src/tor_control_client.js:135
 msgid "Checking bootstrap..."
 msgstr ""
 
@@ -56,57 +56,67 @@ msgstr ""
 msgid "Could not read bootstrap status: "
 msgstr ""
 
-#: src/tor_control_client.js:154
+#: src/tor_control_client.js:155
 #, javascript-format
 msgid "Bootstrap state: %s (%s)"
 msgstr ""
 
-#: src/tor_control_client.js:165
+#: src/tor_control_client.js:163
 #, javascript-format
 msgid "Could not parse bootsrap status: %s (%s)"
 msgstr ""
 
-#: src/tor_control_client.js:173
+#: src/tor_control_client.js:171
 msgid "Starting bootstrap check."
 msgstr ""
 
-#: src/tor_control_client.js:190
+#: src/tor_control_client.js:192
 msgid "Could not switch Tor identity: "
 msgstr ""
 
-#: src/tor_control_client.js:203
-msgid "Could not connect to Tor control port (Tor is not listening on %:%"
+#: src/tor_control_client.js:205
+#, javascript-format
+msgid "Could not connect to Tor control port (Tor is not listening on %s:%s"
 msgstr ""
 
-#: src/tor_control_client.js:215
+#: src/tor_control_client.js:217
 msgid "Could not read protocol info, reason: "
 msgstr ""
 
-#: src/tor_control_client.js:251
+#: src/tor_control_client.js:253
 msgid "Cannot handle tor protocol version: "
 msgstr ""
 
-#: src/tor_control_client.js:261
+#: src/tor_control_client.js:263
 msgid "Could not authenticate, reason: "
 msgstr ""
 
-#: src/tor_control_client.js:278
+#: src/tor_control_client.js:280
 msgid "Lost connection to Tor server"
 msgstr ""
 
-#: src/extension.js:90 src/extension.js:95 src/ui/menu.js:50
+#: src/extension.js:83 src/extension.js:86 src/extension.js:101
+#: src/extension.js:106 src/ui/menu.js:50
 msgid "Tor Network"
 msgstr ""
 
-#: src/extension.js:90
+#: src/extension.js:83
+msgid "Tor network bootstrapped successfully!"
+msgstr ""
+
+#: src/extension.js:86
+msgid "Tor network disconnected!"
+msgstr ""
+
+#: src/extension.js:101
 msgid "Switched to a new Tor identity!"
 msgstr ""
 
-#: src/extension.js:94
+#: src/extension.js:105
 msgid "Tor control protocol error"
 msgstr ""
 
-#: src/extension.js:94
+#: src/extension.js:105
 msgid "status code"
 msgstr ""
 
