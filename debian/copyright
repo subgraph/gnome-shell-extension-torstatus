@@ -5,6 +5,7 @@ Source: https://github.com/subgraph/gnome-shell-extension-torstatus
 Files: src/tor_control_client.js
 Copyright: 2016 Frank Ploss <frank@fqxp.de>
 Copyright: 2016 Subgraph <info@subgraph.com>
+License: GPL3
 
 Files: *
 Copyright: 2016 Subgraph
