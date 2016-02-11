@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-10 23:59+0000\n"
+"POT-Creation-Date: 2016-02-11 06:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,126 +33,117 @@ msgstr ""
 msgid "Tor control protocol error: "
 msgstr ""
 
-#: src/tor_control_client.js:111
+#: src/tor_control_client.js:113
 #, javascript-format
 msgid "Started auto retry (timer id=%s)"
 msgstr ""
 
-#: src/tor_control_client.js:118
+#: src/tor_control_client.js:120
 #, javascript-format
 msgid "Stopping auto retry (timer id=%s)"
 msgstr ""
 
-#: src/tor_control_client.js:131
+#: src/tor_control_client.js:133
 #, javascript-format
 msgid "Stopping bootstrap check (timer id=%s)"
 msgstr ""
 
-#: src/tor_control_client.js:135
-msgid "Checking bootstrap..."
-msgstr ""
-
-#: src/tor_control_client.js:145
+#: src/tor_control_client.js:147
 msgid "Could not read bootstrap status: "
 msgstr ""
 
-#: src/tor_control_client.js:155
+#: src/tor_control_client.js:159
 #, javascript-format
-msgid "Bootstrap state: %s (%s)"
+msgid "Bootstrap state changed: %s (%s)"
 msgstr ""
 
-#: src/tor_control_client.js:163
+#: src/tor_control_client.js:165
 #, javascript-format
 msgid "Could not parse bootsrap status: %s (%s)"
 msgstr ""
 
-#: src/tor_control_client.js:171
+#: src/tor_control_client.js:173
 msgid "Starting bootstrap check."
 msgstr ""
 
-#: src/tor_control_client.js:192
+#: src/tor_control_client.js:194
 msgid "Could not switch Tor identity: "
 msgstr ""
 
-#: src/tor_control_client.js:205
+#: src/tor_control_client.js:207
 #, javascript-format
 msgid "Could not connect to Tor control port (Tor is not listening on %s:%s"
 msgstr ""
 
-#: src/tor_control_client.js:217
+#: src/tor_control_client.js:219
 msgid "Could not read protocol info, reason: "
 msgstr ""
 
-#: src/tor_control_client.js:253
+#: src/tor_control_client.js:255
 msgid "Cannot handle tor protocol version: "
 msgstr ""
 
-#: src/tor_control_client.js:263
+#: src/tor_control_client.js:270
 msgid "Could not authenticate, reason: "
 msgstr ""
 
-#: src/tor_control_client.js:280
+#: src/tor_control_client.js:287
 msgid "Lost connection to Tor server"
 msgstr ""
 
-#: src/extension.js:83 src/extension.js:86 src/extension.js:101
-#: src/extension.js:106 src/ui/menu.js:50
-msgid "Tor Network"
-msgstr ""
-
-#: src/extension.js:83
+#: src/extension.js:88
 msgid "Tor network bootstrapped successfully!"
 msgstr ""
 
-#: src/extension.js:86
+#: src/extension.js:91
 msgid "Tor network disconnected!"
 msgstr ""
 
-#: src/extension.js:101
+#: src/extension.js:96
 msgid "Switched to a new Tor identity!"
 msgstr ""
 
-#: src/extension.js:105
+#: src/extension.js:100
 msgid "Tor control protocol error"
 msgstr ""
 
-#: src/extension.js:105
+#: src/extension.js:100
 msgid "status code"
 msgstr ""
 
-#: src/ui/menu.js:17
+#: src/configs.js:5
+msgid "Tor Network"
+msgstr ""
+
+#: src/ui/menu.js:23
 msgid "Creating tor indicator menu"
 msgstr ""
 
-#: src/ui/menu.js:42
+#: src/ui/menu.js:51
 msgid "Building menu"
 msgstr ""
 
-#: src/ui/menu.js:55
+#: src/ui/menu.js:72
 msgid "New Identity"
 msgstr ""
 
-#: src/ui/menu.js:57
+#: src/ui/menu.js:78
 msgid "Circuit Monitor"
 msgstr ""
 
-#: src/ui/menu.js:58
+#: src/ui/menu.js:79
 msgid "menu circuit monitor"
 msgstr ""
 
-#: src/ui/menu.js:62
-msgid "Connection Preferences"
+#: src/ui/menu.js:99
+msgid "Enable menu"
 msgstr ""
 
-#: src/ui/menu.js:63
-msgid "menu connection prefs"
-msgstr ""
-
-#: src/ui/menu.js:97
+#: src/ui/menu.js:127
 msgid "menu switch identity"
 msgstr ""
 
-#: src/ui/menu.js:102
+#: src/ui/menu.js:132
 #, javascript-format
 msgid "menu switch state: %s reason: %s."
 msgstr ""
@@ -165,19 +156,19 @@ msgstr ""
 msgid "remove ConnectionMonitor"
 msgstr ""
 
-#: src/ui/indicator.js:17
+#: src/ui/indicator.js:21
 msgid "Creating tor indicator"
 msgstr ""
 
-#: src/ui/indicator.js:28
+#: src/ui/indicator.js:32
 msgid "enabling indicator"
 msgstr ""
 
-#: src/ui/indicator.js:46
+#: src/ui/indicator.js:50
 msgid "disabling indicator"
 msgstr ""
 
-#: src/ui/indicator.js:75
+#: src/ui/indicator.js:79
 #, javascript-format
 msgid "indicator switch state: %s reason: %s"
 msgstr ""
@@ -193,25 +184,33 @@ msgid ""
 msgstr ""
 
 #: src/schemas/org.gnome.shell.extensions.torstatus.gschema.xml:17
-msgid "Refresh interval in seconds"
+msgid "Tor Control Port Host"
 msgstr ""
 
 #: src/schemas/org.gnome.shell.extensions.torstatus.gschema.xml:18
-msgid "The interval in seconds to refresh the sandbox information."
+msgid "Tor Control Port Host Address."
 msgstr ""
 
 #: src/schemas/org.gnome.shell.extensions.torstatus.gschema.xml:22
-msgid "Disable notifications"
+msgid "Tor Control Port Port"
 msgstr ""
 
 #: src/schemas/org.gnome.shell.extensions.torstatus.gschema.xml:23
-msgid "Disable popup notifications on changes and errors."
+msgid "Tor Control Port Port."
 msgstr ""
 
 #: src/schemas/org.gnome.shell.extensions.torstatus.gschema.xml:27
-msgid "Disable extended menu"
+msgid "Refresh interval in seconds"
 msgstr ""
 
 #: src/schemas/org.gnome.shell.extensions.torstatus.gschema.xml:28
-msgid "Disable extended menu."
+msgid "The interval in seconds to refresh the sandbox information."
+msgstr ""
+
+#: src/schemas/org.gnome.shell.extensions.torstatus.gschema.xml:32
+msgid "Disable notifications"
+msgstr ""
+
+#: src/schemas/org.gnome.shell.extensions.torstatus.gschema.xml:33
+msgid "Disable popup notifications on changes and errors."
 msgstr ""
