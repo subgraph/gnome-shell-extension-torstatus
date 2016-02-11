@@ -104,10 +104,13 @@ const TorIndicator = new Lang.Class({
 				//this._indicator.add_style_class_name('tor-disconnected-indicator');
 				break;
 			case 'closed':
-			default:
 				this._indicator.opacity = 48;
 				this._indicator.visible = true;
 				//this._indicator.add_style_class_name('tor-none-indicator');
+				break;
+			case 'nonet':
+			default:
+				this._indicator.visible = false;
 				break;
 		}
 	}
