@@ -6,4 +6,4 @@ const PKG_TITLE = _("Tor Network");
 
 const PKG_ICON_SYMBOLIC = 'tor-simple-symbolic';
 
-const PKG_RELEASE = false;
+const PKG_RELEASE = true;
