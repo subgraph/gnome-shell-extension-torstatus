@@ -13,7 +13,7 @@
 			<description>Set the position of this GNOME Shell extension in the panel to either 'center', 'left' or 'right', 'none' (requires restart).</description>
 		</key>
 		<key name="control-host" type="s">
-			<default>127.0.0.1</default>
+			<default>'127.0.0.1'</default>
 			<summary>Tor Control Port Host</summary>
 			<description>Tor Control Port Host Address.</description>
 		</key>
