@@ -51,6 +51,9 @@ const TorIndicator = new Lang.Class({
 		if (this._indicator) {
 			this._indicator.destroy();
 		}
+		if (this.indicators) {
+			this.indicators.destroy();
+		}
 	}
 
 	, findIndicatorWidget: function(widget) {
