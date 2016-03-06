@@ -10,6 +10,7 @@ Vcs-Git: https://github.com/subgraph/gnome-shell-extension-torstatus.git
 Package: gnome-shell-extension-torstatus
 Architecture: all
 Built-Using: ${misc:Built-Using}
+Suggests: onioncircuits
 Depends: gnome-shell (>=3.14), tor, ${misc:Depends}
 Description: Tor Status GNOME Shell Extension.
  GNOME Shell system indicator for Tor Network Status.
