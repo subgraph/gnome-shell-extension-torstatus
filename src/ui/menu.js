@@ -3,7 +3,8 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
-const Util = imports.misc.util;
+const Shell = imports.gi.Shell;
+//const Util = imports.misc.util;
 
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
@@ -32,7 +33,8 @@ const TorMenu = new Lang.Class({
 		this._aggregate = Main.panel.statusArea.aggregateMenu;
 		this._tor_controller = tor_controller;
 		this._tor_controller.connect('changed-connection-state', Lang.bind(this, this._onChangedConnectionState));
-		this._onioncircuits = GLib.find_program_in_path('onioncircuits');
+		//this._onioncircuits = GLib.find_program_in_path('onioncircuits');
+		this._onioncircuits = Shell.AppSystem.get_default().lookup_app('onioncircuits.desktop');
 
 		this.install();
 	}
@@ -141,7 +143,8 @@ const TorMenu = new Lang.Class({
 	}
 
 	, _onMenuOnionCircuits: function() {
-		Util.spawnApp([this._onioncircuits]);
+		//Util.spawnApp([this._onioncircuits]);
+		this._onioncircuits.activate();
 	}
 
 	, _onChangedConnectionState: function(source, state, reason) {

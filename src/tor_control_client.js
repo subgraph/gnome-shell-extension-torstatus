@@ -158,7 +158,7 @@ const TorControlClient = new Lang.Class({
 			if (this._old_percent != this.bootstrap_percent) {
 				log("Tor Status: " + _("Bootstrap state changed: %s (%s)").format(this.bootstrap_summary, this.bootstrap_percent));
 				let phase = (this.bootstrap_percent < 100) ? 'bootstrapping' : 'bootstrapped';
-				this.emit('changed-connection-state', phase, this.bootstrap_summary);
+				this.emit('changed-connection-state', phase, this.bootstrap_summary, this.bootstrap_percent);
 			}
 		} catch (e) {
 			throw new TorProtocolError(
