@@ -1,3 +1,9 @@
+gnome-shell-extension-torstatus (0.0.5-3.18.1) unstable; urgency=medium
+
+  * Added optional menu entry to open onion-circuits utility
+
+ -- Subgraph <info@subgraph.com>  Wed, 16 Mar 2016 18:50:00 +0000
+
 gnome-shell-extension-torstatus (0.0.4-3.18.1) unstable; urgency=medium
 
   * Fixed destroying of indicators
