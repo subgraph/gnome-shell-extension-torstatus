@@ -4,7 +4,7 @@
 , "name": "Tor Status"
 , "gettext-domain": "gnome-shell-extension-torstatus"
 , "settings-schema": "org.gnome.shell.extensions.torstatus"
-, "description": "Tor Status Indicator for GNOME shell, gives the connection status, allow new identity, circuit monitor, and connection preference."
+, "description": "Tor Status Indicator for GNOME shell, gives the connection status, allow triggering of new identity, and opening of onion-circuits if available."
 , "url": "https://github.com/subgraph/gnome-shell-extension-torstatus"
 , "version": 5
 }
