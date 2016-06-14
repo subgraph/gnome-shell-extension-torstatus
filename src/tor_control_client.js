@@ -268,7 +268,7 @@ const TorControlClient = new Lang.Class({
 		if (reply.statusCode != 250) {
 			throw new TorProtocolError(
 				_("Could not authenticate, reason: ") + reply.replyLines.join('\n'),
-				statusCode
+				reply.statusCode
 			);
 		}
 	}
