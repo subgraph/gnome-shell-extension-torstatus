@@ -1,3 +1,9 @@
+gnome-shell-extension-torstatus (0.0.6-3.20.1) unstable; urgency=medium
+
+  * Fixes crash when tor daemon exits
+
+ -- Subgraph <info@subgraph.com>  Tue, 5 Jul 2016 17:30:00 +0000
+
 gnome-shell-extension-torstatus (0.0.5-3.18.1) unstable; urgency=medium
 
   * Added optional menu entry to open onion-circuits utility
