@@ -149,8 +149,8 @@ const TorControlClient = new Lang.Class({
 			);
 		}
 
+		let lines = reply.replyLines.join('\n');
 		try {
-			let lines = reply.replyLines.join('\n');
 			this._old_percent = this.bootstrap_percent;
 			this.bootstrap_percent = parseInt(lines.split('PROGRESS=')[1].split(' ')[0]);
 			this.bootstrap_summary = lines.split('SUMMARY="')[1].split('"')[0];
