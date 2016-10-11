@@ -198,7 +198,8 @@ const TorControlClient = new Lang.Class({
 	}
 
 	, _connect: function(host, port) {
-		var socketClient = new Gio.SocketClient();
+		var socketClient = new Gio.SocketClient({timeout: 1});
+		log('Tor Status: Timeout: ' + socketClient.get_timeout());
 
 		try {
 			this._connection = socketClient.connect_to_host(host + ':' + port, null, null);
